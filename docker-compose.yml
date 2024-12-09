@@ -1,0 +1,5 @@
+services:
+  advent:
+    build: .
+    volumes:
+    - ./:/app
