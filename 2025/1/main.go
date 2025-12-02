@@ -19,33 +19,36 @@ func getRotationDistance(rotation string) int {
 
 const dialSize = 100
 
-func turnDial(position, distance int) (newPosition, passZeroCount int) {
+func turnDial(position, distance int) (newPosition, zeroCount int) {
 	fromZero := position + distance
-	passZeroCount = max(fromZero, -fromZero) / dialSize
-	if fromZero < 0 {
-		passZeroCount += 1
+	// Full rotations made 
+	zeroCount = max(fromZero, -fromZero) / dialSize
+	// If the dial has gone to zero or below, and it didnt start at 0, count that
+	if fromZero <= 0 && position != 0{
+		zeroCount += 1
 	}
 	newPosition = ((fromZero % dialSize) + dialSize) % dialSize 
-	return newPosition, passZeroCount
+	return newPosition, zeroCount
 }
 
 const initialPosition = 50
 
-func analyzeRotations(rotations []string) (endZeroCount, totalPassZeroCount int) {
+func analyzeRotations(rotations []string) (endZeroCount, totalZeroCount int) {
 	currentPosition := initialPosition
 	for _ , rotation := range rotations {
 		distance := getRotationDistance(rotation)
-		newPosition, passZeroCount := turnDial(currentPosition, distance)
+		newPosition, zeroCount := turnDial(currentPosition, distance)
 
 		currentPosition = newPosition
-		totalPassZeroCount += passZeroCount
+		totalZeroCount += zeroCount
 		
 		if currentPosition == 0 {
 			endZeroCount += 1
 		}
+		fmt.Printf("%v -> %v with result at %v - %v\n", rotation, currentPosition, endZeroCount, totalZeroCount)
 	}
 
-	return endZeroCount, totalPassZeroCount
+	return endZeroCount, totalZeroCount
 }
 
 func main() {
@@ -58,10 +61,10 @@ func main() {
     	input = append(input, scanner.Text())
 	}
 
-	endZeroCount, passZeroCount := analyzeRotations(input)
+	endZeroCount, zeroCount := analyzeRotations(input)
 
 	fmt.Printf("Password for part 1 is %v\n", endZeroCount)
-	fmt.Printf("Password for part 2 is %v\n", passZeroCount)
+	fmt.Printf("Password for part 2 is %v\n", zeroCount)
 }
 
 

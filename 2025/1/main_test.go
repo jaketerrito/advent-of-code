@@ -47,7 +47,7 @@ func TestTurnDial(t *testing.T) {
 			start: 50,
 			input: -50,
 			expectedPosition: 0,
-			expectedPassZeroCount: 0,
+			expectedPassZeroCount: 1,
 		},
 		{
 			name: "B",
@@ -66,9 +66,9 @@ func TestTurnDial(t *testing.T) {
 		{
 			name: "D",
 			start: 0,
-			input: -1001,
+			input: -1,
 			expectedPosition: 99,
-			expectedPassZeroCount: 11,
+			expectedPassZeroCount: 0,
 		},
 		{
 			name: "E",
@@ -83,6 +83,13 @@ func TestTurnDial(t *testing.T) {
 			input: 250,
 			expectedPosition: 0,
 			expectedPassZeroCount: 3,
+		},
+		{	
+			name: "G",
+			start: 50,
+			input: 1000,
+			expectedPosition: 50,
+			expectedPassZeroCount: 10,
 		},
 	}
 	
@@ -114,9 +121,9 @@ func TestAnalyzeRotations(t *testing.T) {
 		},
 		{
 			name: "B",
-			input: []string{"L774"},
+			input: []string{"L999", "R4321", "L73"},
 			expectedEndZeroCount: 0,
-			expectedPassZeroCount: 8,
+			expectedPassZeroCount: 54,
 		},
 	}
 	
